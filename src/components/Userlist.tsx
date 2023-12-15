@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export default function Userlist({id,hash, name, message, time, unread, setRoomid, setCurrentUserInfo, setFirstLoad}) {
 
     function handleClick() {

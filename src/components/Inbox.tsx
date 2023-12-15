@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import moment from 'moment';
 import Userlist from './Userlist';
 

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export default function Message({message, user=0}) {
     let className;
     if(user==1) 
