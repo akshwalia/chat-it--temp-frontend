@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [loading, setLoading] = useState(true);
+  const [loginLoading, setLoginLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -41,6 +42,7 @@ function Login() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+    setLoginLoading(true);
     const username = e.target.username.value;
     const password = e.target.password.value;
 
@@ -53,6 +55,7 @@ function Login() {
       console.log(response.data);
 
       localStorage.setItem('auth-token', response.data.token);
+      setLoginLoading(false);
       navigate('/main');
     }
     catch (err) {
@@ -62,7 +65,7 @@ function Login() {
 
   if(loading) {
     return (
-      <div className='text-[60px] flex flex-col justify-center items-center h-screen'>Loading...</div>
+      <div className='text-[60px] w-screen h-screen flex flex-col justify-center items-center h-screen'>Loading...</div>
     )
   }
 
@@ -79,7 +82,9 @@ function Login() {
             <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
               <input type="text" name='username' id='username' placeholder='Username' className='border-solid border-black border-2 px-2 py-[3px]' required />
               <input type="password" name='password' id='password' placeholder='Password' className='border-solid border-black border-2 px-2 py-[3px]' required />
-              <button className='bg-primary-blue py-2 text-white hover:bg-secondary-blue'>LOG IN</button>
+              <button className='bg-primary-blue py-2 text-white hover:bg-secondary-blue'>
+                { loginLoading ? <i className="fa-solid fa-spinner animate-spin"></i> : 'Log In' }
+              </button>
             </form>
             <p className='text-center'>New to ChatIt? <Link to='/' className='text-primary-blue hover:text-secondary-blue'>Register</Link></p>
           </div>

@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 function App() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [registerLoading, setRegisterLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -45,6 +46,7 @@ function App() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+    setRegisterLoading(true);
     const name = e.target.name.value;
     const email = e.target.email.value;
     const username = e.target.username.value;
@@ -69,6 +71,7 @@ function App() {
       );
 
       console.log(response.data);
+      setRegisterLoading(false);
 
       navigate('/login');
     }
@@ -84,7 +87,7 @@ function App() {
 
   if(loading) {
     return (
-      <div className='text-[60px] flex flex-col justify-center items-center h-screen'>Loading...</div>
+      <div className='text-[60px] w-screen h-screen flex flex-col justify-center items-center h-screen'>Loading...</div>
     )
   }
 
@@ -105,7 +108,9 @@ function App() {
               <input type="password" name='password' id='password' placeholder='Password' className='border-solid border-black border-2 px-2 py-[3px]' required />
               <input type="password" name='confpassword' id='confpassword' placeholder='Confirm Password' className='border-solid border-black border-2 px-2 py-[3px]' required />
               {error && <p className='text-red-500 -mt-[20px]'>* {error}</p>}
-              <button className='bg-[#3978D3] py-2 text-white hover:bg-[#334d72]'>REGISTER</button>
+              <button className='bg-[#3978D3] py-2 text-white hover:bg-[#334d72]'>
+                {registerLoading ? <i className="fa-solid fa-spinner animate-spin"></i> : 'REGISTER'}
+              </button>
             </form>
             <p className='text-center'>Already have an account? <Link to='/login' className='text-[#3978D3] hover:text-[#334d72]'>Login</Link></p>
           </div>

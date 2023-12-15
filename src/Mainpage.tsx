@@ -127,7 +127,7 @@ export default function Mainpage() {
 
     if (loading) {
         return (
-            <div className="text-[60px] flex flex-col justify-center items-center">Loading...</div>
+            <div className="text-[60px] w-screen h-screen flex flex-col justify-center items-center">Loading...</div>
         )
     }
 
