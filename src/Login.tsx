@@ -61,6 +61,7 @@ function Login() {
       navigate('/main');
     }
     catch (err) {
+      setLoginLoading(false);
       console.error(err);
     }
   }
