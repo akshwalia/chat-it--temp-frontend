@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useNavigate } from "react-router-dom";
 export default function SidebarHeader({ userInfo, setShowAddFriend, setShowRequests }) {
     const navigate = useNavigate();

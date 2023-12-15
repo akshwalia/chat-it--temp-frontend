@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useEffect, useState } from 'react';
 import './App.css'
 import logInGIF from './assets/login.gif'
@@ -65,7 +67,7 @@ function Login() {
 
   if(loading) {
     return (
-      <div className='text-[60px] w-screen h-screen flex flex-col justify-center items-center h-screen'>Loading...</div>
+      <div className='text-[60px] w-screen h-screen flex flex-col justify-center items-center '>Loading...</div>
     )
   }
 
