@@ -85,7 +85,7 @@ function Login() {
               <input type="text" name='username' id='username' placeholder='Username' className='border-solid border-black border-2 px-2 py-[3px]' required />
               <input type="password" name='password' id='password' placeholder='Password' className='border-solid border-black border-2 px-2 py-[3px]' required />
               <button className='bg-primary-blue py-2 text-white hover:bg-secondary-blue'>
-                { loginLoading ? <i className="fa-solid fa-spinner animate-spin"></i> : 'Log In' }
+                { loginLoading ? <i className="fa-solid fa-spinner animate-spin"></i> : 'LOG IN' }
               </button>
             </form>
             <p className='text-center'>New to ChatIt? <Link to='/' className='text-primary-blue hover:text-secondary-blue'>Register</Link></p>
