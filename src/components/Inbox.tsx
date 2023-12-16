@@ -8,7 +8,7 @@ const ids = [222,223,224,225,238,239,240,241,242,243,244];
 
 export default function Inbox({inbox, setRoomid, setCurrentUserInfo, setFirstLoad}) {
     return (
-        <div className="userlist h-[585px] my-2 overflow-scroll">
+        <div className="userlist flex-1 my-2 overflow-scroll">
             {inbox.map((conversation) => {
                 let formattedTime = '';
                 const date = new Date(conversation.last_sent_time);
@@ -28,6 +28,7 @@ export default function Inbox({inbox, setRoomid, setCurrentUserInfo, setFirstLoa
 
                 return (
                     <Userlist id={234} 
+                        owner={conversation.owner}
                         hash={conversation.conversation_hash} 
                         name={conversation.friend_name} 
                         message={conversation.last_message} 

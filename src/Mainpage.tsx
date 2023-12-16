@@ -23,7 +23,7 @@ export default function Mainpage() {
     const [inbox, setInbox] = useState([]);
     const [messages, setMessages] = useState([]);
     const [roomid, setRoomid] = useState('');
-    const [currentUserInfo, setCurrentUserInfo] = useState({ id: '', name: '' });
+    const [currentUserInfo, setCurrentUserInfo] = useState({ id: '', name: '', _id: '' });
     const [showEmoji, setShowEmoji] = useState(false);
     const [loading, setLoading] = useState(true);
     const [firstLoad, setFirstLoad] = useState(true);
@@ -54,8 +54,8 @@ export default function Mainpage() {
                 });
                 localStorage.setItem('userInfo', JSON.stringify(response.data.user));
                 setInbox(response.data.conversations);
-                console.log(response.data.conversations);
                 setLoading(false);
+                socket.emit('join_room', response.data.user._id);
             }
             catch (err) {
                 alert('Please Log In again')
@@ -73,16 +73,21 @@ export default function Mainpage() {
             setReload((reload) => reload + 1);
         })
 
+        socket.on('reload_conversations', () => {
+            setReload((reload) => reload + 1);
+        });
+
 
         return () => {
             socket.off('receive_message');
+            socket.off('reload_conversations');
         }
     }, [socket]);
 
     //SOCKET for joining room and getting messages
     useEffect(() => {
         console.log('joining room');
-        
+
         socket.emit('join_room', roomid);
 
         async function getMessages() {
@@ -117,7 +122,7 @@ export default function Mainpage() {
 
         setMessages(temp);
         e.target.message.value = '';
-        const response = await socket.emitWithAck('message', { message, roomid, sender: userInfo._id });
+        const response = await socket.emitWithAck('message', { message, roomid, sender: userInfo._id, receiver: currentUserInfo._id });
         setReload(reload + 1);
     }
 
@@ -146,47 +151,44 @@ export default function Mainpage() {
                         <input type="text" name="searchusers" id="searchusers" className="bg-transparent outline-none placeholder:text-[#696969]" placeholder="Search here..." />
                     </div>
 
-                    <Inbox inbox={inbox} setRoomid={setRoomid} setCurrentUserInfo={setCurrentUserInfo} setFirstLoad={setFirstLoad}/>
+                    <Inbox inbox={inbox} setRoomid={setRoomid} setCurrentUserInfo={setCurrentUserInfo} setFirstLoad={setFirstLoad} />
                 </div>
                 <div className="messagemain h-screen flex-3 flex flex-col justify-between">
-                    {firstLoad? null :
+                    {firstLoad ? null :
                         <>
                             <MessageHeader currentUserInfo={currentUserInfo} />
 
-                            <div className="wrapper">
-                                <ChatArea messages={messages} showEmoji={showEmoji} setShowEmoji={setShowEmoji} userInfo={userInfo} />
+                            <ChatArea messages={messages} showEmoji={showEmoji} setShowEmoji={setShowEmoji} userInfo={userInfo} />
 
-                                <div className="messagebar justify-self-end px-2">
-                                    <form onSubmit={handleMessageSubmit} autoComplete="off">
-                                        <div className="messageinput flex items-center justify-between gap-4 ">
-                                            <div className="flex justify-between w-full bg-white px-5 py-3 rounded-md">
-                                                <input type="text" name="message" id="message" className="bg-transparent outline-none w-full placeholder:text-[#696969]" placeholder="Type a message..." />
-                                                <div className="flex items-center gap-2">
-                                                    <div className="option w-7 h-7 rounded-[50%] border-primary-blue border-[2px] flex items-center justify-center cursor-pointer">
-                                                        <i className="fa-solid fa-plus" style={{ color: "#3978d3" }}></i>
-                                                    </div>
-                                                    <div
-                                                        className="option w-7 h-7 rounded-[50%] border-primary-blue border-[2px] flex items-center justify-center cursor-pointer"
-                                                        onClick={handleEmojiClick}
-                                                    >
-                                                        <i className="fa-solid fa-smile" style={{ color: "#3978d3" }}></i>
-                                                    </div>
-                                                    <div className="option w-7 h-7 rounded-[50%] border-primary-blue border-[2px] flex items-center justify-center cursor-pointer">
-                                                        <i className="fa-solid fa-paperclip" style={{ color: "#3978d3" }}></i>
-                                                    </div>
+                            <div className="messagebar flex-grow-0 flex-shrink-0 justify-self-end px-2">
+                                <form onSubmit={handleMessageSubmit} autoComplete="off">
+                                    <div className="messageinput flex items-center justify-between gap-4 ">
+                                        <div className="flex justify-between w-full bg-white px-5 py-3 rounded-md">
+                                            <input type="text" name="message" id="message" className="bg-transparent outline-none w-full placeholder:text-[#696969]" placeholder="Type a message..." />
+                                            <div className="flex items-center gap-2">
+                                                <div className="option w-7 h-7 rounded-[50%] border-primary-blue border-[2px] flex items-center justify-center cursor-pointer">
+                                                    <i className="fa-solid fa-plus" style={{ color: "#3978d3" }}></i>
+                                                </div>
+                                                <div
+                                                    className="option w-7 h-7 rounded-[50%] border-primary-blue border-[2px] flex items-center justify-center cursor-pointer"
+                                                    onClick={handleEmojiClick}
+                                                >
+                                                    <i className="fa-solid fa-smile" style={{ color: "#3978d3" }}></i>
+                                                </div>
+                                                <div className="option w-7 h-7 rounded-[50%] border-primary-blue border-[2px] flex items-center justify-center cursor-pointer">
+                                                    <i className="fa-solid fa-paperclip" style={{ color: "#3978d3" }}></i>
                                                 </div>
                                             </div>
-                                            <div className="flex gap-2 items-center">
-                                                <button>
-                                                    <div className="option w-7 h-7 rounded-[50%] bg-primary-blue flex items-center justify-center">
-                                                        <i className="fa-solid fa-paper-plane" style={{ color: "#ffffff" }}></i>
-                                                    </div>
-                                                </button>
-                                            </div>
                                         </div>
-                                    </form>
-                                </div>
-                                
+                                        <div className="flex gap-2 items-center">
+                                            <button>
+                                                <div className="option w-7 h-7 rounded-[50%] bg-primary-blue flex items-center justify-center">
+                                                    <i className="fa-solid fa-paper-plane" style={{ color: "#ffffff" }}></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </>
                     }
