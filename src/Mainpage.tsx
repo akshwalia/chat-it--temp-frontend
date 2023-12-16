@@ -142,11 +142,11 @@ export default function Mainpage() {
         <>
 
             <div className="mainwrapper flex w-screen" onClick={handleOutsideClick}>
-                <div className="sidebar bg-white h-screen flex-1">
+                <div className="sidebar bg-white h-screen flex-1 flex flex-col">
 
                     <SidebarHeader userInfo={userInfo} setShowAddFriend={setShowAddFriend} setShowRequests={setShowRequests} />
 
-                    <div className="searchbar p-3 mx-5 my-2 bg-[#e4e4e4] flex gap-3 items-center rounded-lg">
+                    <div className="searchbar p-3 mx-5 my-2 bg-[#e4e4e4] flex gap-3 items-center rounded-lg flex-grow-0 flex-shrink-0" >
                         <i className="fa-solid fa-magnifying-glass" style={{ color: "#707070" }}></i>
                         <input type="text" name="searchusers" id="searchusers" className="bg-transparent outline-none placeholder:text-[#696969]" placeholder="Search here..." />
                     </div>
