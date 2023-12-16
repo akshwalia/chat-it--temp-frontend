@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-export default function Userlist({id,hash, name, message, time, unread, setRoomid, setCurrentUserInfo, setFirstLoad}) {
+export default function Userlist({id,owner,hash, name, message, time, unread, setRoomid, setCurrentUserInfo, setFirstLoad}) {
 
     function handleClick() {
         setCurrentUserInfo({id, name, _id: hash.replace(owner, '')});
