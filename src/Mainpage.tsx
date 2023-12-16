@@ -199,7 +199,7 @@ export default function Mainpage() {
             </div>
 
             {showAddFriend ? <Addfriend setShowAddFriend={setShowAddFriend} userInfo={userInfo} /> : null}
-            {showRequests ? <Friendrequests setShowFriendRequests={setShowRequests} setReload={setReload} reload={reload} /> : null}
+            {showRequests ? <Friendrequests setShowFriendRequests={setShowRequests} setReload={setReload} reload={reload} socket={socket}/> : null}
         </>
     )
 }
