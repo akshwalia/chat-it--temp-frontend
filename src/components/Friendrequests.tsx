@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function Friendrequests({ setShowFriendRequests, setReload, reload }) {
+export default function Friendrequests({ setShowFriendRequests, setReload, reload, socket }) {
     const [friendRequests, setFriendRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [AcceptLoading, setAcceptLoading] = useState('');
@@ -17,6 +17,7 @@ export default function Friendrequests({ setShowFriendRequests, setReload, reloa
                         Authorization: `Bearer ${localStorage.getItem('auth-token')}`
                     }
                 });
+
                 setFriendRequests(response.data);
                 setLoading(false);
             }
@@ -40,6 +41,7 @@ export default function Friendrequests({ setShowFriendRequests, setReload, reloa
             });
             console.log(response.data);
             setFriendRequests(friendRequests.filter((req) => req._id !== e.target.id));
+            socket.emit('reload_conversations', e.target.id);
             setReload(reload + 1);
         }
         catch (err) {
