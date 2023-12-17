@@ -30,6 +30,7 @@ export default function Mainpage() {
     const [showAddFriend, setShowAddFriend] = useState(false);
     const [showRequests, setShowRequests] = useState(false);
     const [reload, setReload] = useState(1);
+    const [typing, setTyping] = useState(false);
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
@@ -77,10 +78,15 @@ export default function Mainpage() {
             setReload((reload) => reload + 1);
         });
 
+        socket.on('typing', (data) => { 
+            console.log('reached');
+            setTyping(data.typing);
+        });
 
         return () => {
             socket.off('receive_message');
             socket.off('reload_conversations');
+            socket.off('typing');
         }
     }, [socket]);
 
@@ -117,6 +123,7 @@ export default function Mainpage() {
         e.preventDefault();
         const message = e.target.message.value;
         if (message === '') return;
+        socket.emit('typing', {roomid, typing: false});
 
         const temp = [...messages, { body: message, sender: userInfo._id }];
 
@@ -131,6 +138,15 @@ export default function Mainpage() {
             setShowEmoji(false);
         }
     };
+
+    function checkTypingStatus(e) {
+        if(e.target.value === '') {
+            socket.emit('typing', {roomid, typing: false});
+        }
+        else {
+            socket.emit('typing', {roomid, typing: true});
+        }
+    }
 
     if (loading) {
         return (
@@ -158,13 +174,13 @@ export default function Mainpage() {
                         <>
                             <MessageHeader currentUserInfo={currentUserInfo} />
 
-                            <ChatArea messages={messages} showEmoji={showEmoji} setShowEmoji={setShowEmoji} userInfo={userInfo} />
+                            <ChatArea messages={messages} showEmoji={showEmoji} setShowEmoji={setShowEmoji} userInfo={userInfo} typing={typing}/>
 
                             <div className="messagebar flex-grow-0 flex-shrink-0 justify-self-end px-2">
                                 <form onSubmit={handleMessageSubmit} autoComplete="off">
                                     <div className="messageinput flex items-center justify-between gap-4 ">
                                         <div className="flex justify-between w-full bg-white px-5 py-3 rounded-md">
-                                            <input type="text" name="message" id="message" className="bg-transparent outline-none w-full placeholder:text-[#696969]" placeholder="Type a message..." />
+                                            <input type="text" name="message" id="message" className="bg-transparent outline-none w-full placeholder:text-[#696969]" placeholder="Type a message..." onChange={checkTypinStatus}/>
                                             <div className="flex items-center gap-2">
                                                 <div className="option w-7 h-7 rounded-[50%] border-primary-blue border-[2px] flex items-center justify-center cursor-pointer">
                                                     <i className="fa-solid fa-plus" style={{ color: "#3978d3" }}></i>
