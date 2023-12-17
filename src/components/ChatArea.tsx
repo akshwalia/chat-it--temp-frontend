@@ -5,7 +5,7 @@ import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import WaveTypingIndicator from "./typingMessage";
 
-export default function ChatArea({ messages, showEmoji, setShowEmoji, userInfo}) {
+export default function ChatArea({ messages, showEmoji, setShowEmoji, userInfo, typing}) {
     function handleEmojiSelection(e) {
         const input = document.getElementById('message');
         input.value += e.native;
@@ -23,7 +23,9 @@ export default function ChatArea({ messages, showEmoji, setShowEmoji, userInfo})
                         )
                     })
                 }
-                <WaveTypingIndicator />
+                {
+                    typing ? <WaveTypingIndicator /> : null
+                }
             </div>
             
 
