@@ -180,7 +180,7 @@ export default function Mainpage() {
                                 <form onSubmit={handleMessageSubmit} autoComplete="off">
                                     <div className="messageinput flex items-center justify-between gap-4 ">
                                         <div className="flex justify-between w-full bg-white px-5 py-3 rounded-md">
-                                            <input type="text" name="message" id="message" className="bg-transparent outline-none w-full placeholder:text-[#696969]" placeholder="Type a message..." onChange={checkTypinStatus}/>
+                                            <input type="text" name="message" id="message" className="bg-transparent outline-none w-full placeholder:text-[#696969]" placeholder="Type a message..." onChange={checkTypingStatus}/>
                                             <div className="flex items-center gap-2">
                                                 <div className="option w-7 h-7 rounded-[50%] border-primary-blue border-[2px] flex items-center justify-center cursor-pointer">
                                                     <i className="fa-solid fa-plus" style={{ color: "#3978d3" }}></i>
