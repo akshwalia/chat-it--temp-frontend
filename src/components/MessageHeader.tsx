@@ -8,9 +8,7 @@ export default function MessageHeader({currentUserInfo}) {
                 <div className="">{currentUserInfo.name}</div>
             </div>
             <div className="flex gap-2">
-                <div className="option w-7 h-7 rounded-[50%] border-primary-blue border-[2px] flex items-center justify-center">
-                    <i className="fa-solid fa-gear" style={{ color: "#3978d3" }}></i>
-                </div>
+                
             </div>
         </div>
     )
